@@ -1,2 +1,2 @@
-# statgate
-StatGate for any use
+# personal-laravel-app
+Laravel + Filament + Dockers project.

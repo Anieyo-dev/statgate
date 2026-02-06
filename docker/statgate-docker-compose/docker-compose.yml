@@ -1,0 +1,127 @@
+# Specify version making sure, that everyone using the same version
+services:
+  statgate_app:
+    image: statgate-app
+    container_name: statgate_laravel
+    # build dockerfile
+    build: ./
+    networks:
+      # network specified to avoid used ports
+      statgate_net:
+        ipv4_address: 172.51.0.2
+    ports:
+      - "443"
+    volumes:
+      # Laravel files
+      - statgate_laravel_files:/var/www/html
+      # Vhost for Apache
+      - ../config/statgate.conf:/etc/apache2/sites-available/000-default.conf
+      - ../config/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    secrets:
+      - source: apache-selfsigned-crt
+        target: /etc/apache2/ssl/laravel/apache-selfsigned.crt
+      - source: apache-selfsigned-key
+        target: /etc/apache2/ssl/laravel/apache-selfsigned.key
+    depends_on:
+      - statgate_db
+    env_file:
+      - ../config/.env.dev
+    command: /bin/bash -c "apachectl -D FOREGROUND && redis-server"
+
+  # Queue Worker
+#   statgate-queue-worker:
+#     image: statgate-app
+#     container_name: statgate-queue-worker
+#     tty: true
+#     working_dir: /var/www/html
+#     volumes:
+#       - statgate_laravel_files:/var/www/html
+#       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+#     networks:
+#       statgate_net:
+#         ipv4_address: 172.51.0.5
+#     depends_on:
+#       statgate_db:
+#         condition: service_healthy
+#     env_file:
+#         - ../config/.env.dev
+#     command: php artisan queue:work --queue=default --sleep=3 --tries=3 --max-time=3600
+
+
+#   # Scheduler
+#   statgate-scheduler-worker:
+#     image: statgate-app
+#     container_name: statgate-scheduler-worker
+#     tty: true
+#     working_dir: /var/www/html
+#     volumes:
+#       - statgate_laravel_files:/var/www/html
+#       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+#       - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
+#     networks:
+#       statgate_net:
+#         ipv4_address: 172.51.0.6
+#     depends_on:
+#       statgate_db:
+#           condition: service_healthy
+#     env_file:
+#       - ../config/.env.dev
+#     command: php artisan schedule:work
+# #    command: ["sh", "/usr/local/bin/entrypoint.sh"]
+
+
+  # MySQL Database
+  statgate_db:
+    image: mysql:9.1
+    container_name: statgate_db
+    networks:
+      statgate_net:
+        ipv4_address: 172.51.0.3
+    volumes:
+      - statgate_db_data:/var/lib/mysql
+    env_file:
+      - ../config/.env.dev
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # PhpMyAdmin
+  statgate_phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: statgate_phpmyadmin
+    depends_on:
+      - statgate_db
+    networks:
+      statgate_net:
+        ipv4_address: 172.51.0.4
+    env_file:
+      - ../config/.env.dev
+    ports:
+      - "9051:80"
+
+# networks used at project to avoid used ports.
+networks:
+  statgate_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.51.0.0/16
+
+# Volumes for composer
+volumes:
+  statgate_db_data:
+  statgate_laravel_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ../../statgate-app
+
+# Secrets for local ssl
+secrets:
+  apache-selfsigned-crt:
+    file: ../apache2/ssl/certs/apache-selfsigned.crt
+  apache-selfsigned-key:
+    file: ../apache2/ssl/private/apache-selfsigned.key

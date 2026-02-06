@@ -1,0 +1,4 @@
+docker/apache2/ssl/certs/*
+docker/apache2/ssl/private/*
+docker/config/.env.dev
+docker/config/.statgate.conf
