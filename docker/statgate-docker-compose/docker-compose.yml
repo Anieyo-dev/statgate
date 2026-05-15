@@ -28,46 +28,63 @@ services:
       - ../config/.env.dev
     command: /bin/bash -c "apachectl -D FOREGROUND && redis-server"
 
-  # Queue Worker
-#   statgate-queue-worker:
-#     image: statgate-app
-#     container_name: statgate-queue-worker
-#     tty: true
-#     working_dir: /var/www/html
-#     volumes:
-#       - statgate_laravel_files:/var/www/html
-#       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-#     networks:
-#       statgate_net:
-#         ipv4_address: 172.51.0.5
-#     depends_on:
-#       statgate_db:
-#         condition: service_healthy
-#     env_file:
-#         - ../config/.env.dev
-#     command: php artisan queue:work --queue=default --sleep=3 --tries=3 --max-time=3600
+  # Scheduler
+  statgate-scheduler-worker:
+    image: laravel-app
+    container_name: statgate-scheduler-worker
+    tty: true
+    working_dir: /var/www/html
+    volumes:
+      - statgate_laravel_files:/var/www/html
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
+    networks:
+      statgate_net:
+        ipv4_address: 172.51.0.6
+    depends_on:
+      statgate_db:
+          condition: service_healthy
+    env_file:
+      - ../config/.env.dev
+    command: php artisan schedule:work
+#    command: ["sh", "/usr/local/bin/entrypoint.sh"]
+#    restart: always
+  statgate_redis:
+    image: 'redis:alpine'
+    ports:
+      - "6379:6379"
+    volumes:
+      - 'laravel_redis:/data'
+    networks:
+      statgate_net:
+        ipv4_address: 172.51.0.7
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
+    depends_on:
+      statgate_db:
+        condition: service_healthy
 
-
-#   # Scheduler
-#   statgate-scheduler-worker:
-#     image: statgate-app
-#     container_name: statgate-scheduler-worker
-#     tty: true
-#     working_dir: /var/www/html
-#     volumes:
-#       - statgate_laravel_files:/var/www/html
-#       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-#       - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
-#     networks:
-#       statgate_net:
-#         ipv4_address: 172.51.0.6
-#     depends_on:
-#       statgate_db:
-#           condition: service_healthy
-#     env_file:
-#       - ../config/.env.dev
-#     command: php artisan schedule:work
-# #    command: ["sh", "/usr/local/bin/entrypoint.sh"]
+  statgate_horizon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: statgate_horizon
+    # restart: always
+    command: php artisan horizon
+    networks:
+      statgate_net:
+        ipv4_address: 172.51.0.8
+    # 1. Wskaż folder roboczy, w którym jest plik artisan
+    working_dir: /var/www/html
+    # 2. Podmontuj pliki aplikacji
+    volumes:
+      - statgate_laravel_files:/var/www/html
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    depends_on:
+      statgate_redis:
+        condition: service_healthy
 
 
   # MySQL Database
@@ -118,6 +135,8 @@ volumes:
       type: none
       o: bind
       device: ../../statgate-app
+  laravel_redis:
+    driver: local
 
 # Secrets for local ssl
 secrets:

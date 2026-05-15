@@ -46,6 +46,9 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends \
     && pecl install imagick \
     && docker-php-ext-enable imagick
+RUN pecl install redis && docker-php-ext-enable redis
+RUN docker-php-ext-install pcntl
+
 
 # RUN apt-get update && apt-get install -y supervisor
 # COPY supervisord.conf /etc/supervisor/supervisord.conf

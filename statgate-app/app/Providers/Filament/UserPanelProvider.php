@@ -18,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationItem;
 
 class UserPanelProvider extends PanelProvider
 {
@@ -28,13 +29,24 @@ class UserPanelProvider extends PanelProvider
             ->id('user')
             ->path('user')
             ->login()
+            ->topNavigation()
+            ->navigationItems([
+                NavigationItem::make('Dashboard')
+                    ->url(fn () => route('guest.dashboard')),
+                NavigationItem::make('Search player')
+                    ->url(fn () => route('guest.search-player')),
+                NavigationItem::make('Guilds')
+                    ->url(fn () => route('guest.guilds')),
+                NavigationItem::make('My profile')
+                    ->url(fn () => route('profile.user', ['user_id' => '1']))
+            ])
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
-                Dashboard::class,
+                // Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([

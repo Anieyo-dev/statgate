@@ -34,5 +34,15 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'albion_api' => [
+        'eu' => [
+            'url' => env('EXTERNAL_ALBION_EU_URL')
+        ],
+        'na' => [
+            'url' => env('EXTERNAL_ALBION_NA_URL')
+        ],
+        'asia' => [
+            'url' => env('EXTERNAL_ALBION_ASIA_URL')
+        ]
+    ]
 ];

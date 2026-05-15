@@ -2,6 +2,7 @@
 @import '../../vendor/livewire/flux/dist/flux.css';
 
 @source '../views';
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
@@ -64,3 +65,77 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* .fi-topbar {
+  background: #2b6d19f0 !important;
+  border-bottom: 2px solid #2d5422;
+} */
+ .fi-topbar {
+    /* Łączymy dwa gradienty: lewy i prawy */
+    background: 
+        radial-gradient(circle at 0% 100%, #222b21 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, #222b21 0%, transparent 40%),
+        #151a14;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    
+    /* Blask na samej krawędzi - ten "jeden piksel", o którym wspominałem */
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 4px 20px rgba(0, 0, 0, 0.4);
+
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+ }
+
+ .fi-topbar .fi-logo{
+    color: white;
+ }
+ .fi-topbar-item-btn>.fi-icon{
+    color: white;
+ }
+ .fi-topbar-item-label{
+    color: white;
+ }
+ .fi-topbar-item-btn{
+    transition: 200ms;
+ }
+ .fi-topbar-item-btn:hover{
+    background-color: oklch(0.99 0 0 / 0.13);
+ }
+ body{
+    /* Bardzo ciemny, "nocny" odcień zieleni/szarości */
+    background-color: #0d130c; 
+    
+    /* Subtelny gradient radialny, który rozjaśnia środek ekranu 
+       (tworzy efekt winiety, skupiając wzrok na kartach) */
+    background-image: radial-gradient(
+        circle at center, 
+        #161f15 0%, 
+        #0d130c 100%
+    );
+    
+    min-height: 100vh;
+    margin: 0;
+    background-image: 
+        url('https://www.transparenttextures.com/patterns/stardust.png'), 
+        radial-gradient(circle at center, #161f15 0%, #0d130c 100%);
+ }
+ footer{
+    background: 
+        radial-gradient(circle at 0% 100%, #222b21 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, #222b21 0%, transparent 40%),
+        #151a14;
+    
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.3);
+ }
+
+ .bg-albion-main{
+    background: 
+        radial-gradient(circle at 0% 100%, #222b21 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, #222b21 0%, transparent 40%),
+        #151a14;
+ }
