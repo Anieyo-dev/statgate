@@ -1,0 +1,16 @@
+:root {
+  --game-accent: #d97706;
+  --game-card-bg: #1a2119;
+  --albion-card-title-bg: #212620;
+
+  --font-albion-secondary: var(--color-amber-600);
+  --font-albion: opensans, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
+
+  // shadows
+
+  --albion-card-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
+@theme {
+  --font-sans: opensans, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
+}

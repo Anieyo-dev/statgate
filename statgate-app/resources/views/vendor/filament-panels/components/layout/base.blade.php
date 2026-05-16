@@ -38,7 +38,7 @@
         </title>
 
         {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::STYLES_BEFORE, scopes: $renderHookScopes) }}
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/css/theme.scss', 'resources/js/app.js'])
         <style>
             [x-cloak=''],
             [x-cloak='x-cloak'],

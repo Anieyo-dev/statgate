@@ -46,6 +46,9 @@ class AlbionGameApiService
      */
     public function getPlayerStats(string $nickname, string $server, bool $debug = false)
     {
+        if($nickname){
+            $nickname = strtolower($nickname);
+        }
         $cacheKey = "albion_player_{$server}_{$nickname}";
         $this->baseUrl = $this->getUrlByServer($server);
         $source = 'cache'; // Domyślnie zakładamy cache
@@ -63,7 +66,16 @@ class AlbionGameApiService
                 $playerData = $response->json();
                 
                 // Zapisujemy do cache na godzinę (3600s) tylko jeśli sukces
-                Cache::put($cacheKey, $playerData, 3600);
+                Cache::put($cacheKey, $playerData, 7200);
+
+                $index = Cache::get('albion_player_last_searched', []);
+
+                $index[] = $cacheKey;
+
+                $index = array_values(array_unique($index));
+                $index = array_slice($index, -50);
+
+                Cache::put('albion_player_last_searched', $index, 7200);
             }
         }
 

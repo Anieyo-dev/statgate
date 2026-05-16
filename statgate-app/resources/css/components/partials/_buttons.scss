@@ -1,0 +1,15 @@
+// bg-amber-600/70 hover:bg-amber-600/50 text-white font-semibold border border-amber-600 hover:border-amber-600/50  px-8 py-2 rounded-lg
+
+.albion-btn{
+  padding: 0.5rem 2rem;
+  border-radius: var(--radius-lg);
+  transition: 200ms;
+  &.albion-btn-main{
+    // @apply hover:border-amber-600/50;
+    background-color: color-mix(in oklab, var(--color-amber-600) /* oklch(66.6% 0.179 58.318) */ 70%, transparent);
+    color: rgb(237, 233, 233);
+    &:hover{
+      background-color: color-mix(in oklab, var(--color-amber-600) /* oklch(66.6% 0.179 58.318) */ 50%, transparent);
+    }
+  }
+}

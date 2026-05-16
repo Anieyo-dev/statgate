@@ -113,5 +113,17 @@ return [
     */
 
     'prefix' => env('CACHE_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-cache-'),
+    'albion_player_prefix' => 'albion_player_',
+    'albion' => [
+        'prefix' => [
+            'players' => [
+                'user' => 'albion_player_',
+                'last_searched' => 'albion_player_last_searched',
+            ],
+            'guilds' => [
+
+            ]
+        ],
+    ]
 
 ];

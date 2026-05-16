@@ -1,0 +1,9 @@
+// Variables
+@use 'components/variables';
+
+// Importing customized files
+@use 'components/breadcrumbs';
+@use 'components/body';
+
+// Importing partials
+@use 'components/partials/buttons';

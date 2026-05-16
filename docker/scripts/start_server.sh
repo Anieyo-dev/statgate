@@ -10,7 +10,8 @@ read -s -n1 choice
 echo "STARTING SERVER"
 if [ $choice -eq "1" ]; then    
     echo "Starting server"
-    docker-compose -f docker-compose.yml up --remove-orphans #> ../logs/dev.log
+    cd ../statgate-docker-compose
+    docker-compose -f docker-compose.yml up --remove-orphans > ../logs/dev.log
 elif [ $choice -eq "2" ]; then
     echo "Starting server with rebuild"
     docker-compose -f docker-compose.yml up --remove-orphans --build #> ../logs/dev.log
