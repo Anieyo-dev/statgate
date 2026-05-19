@@ -39,58 +39,59 @@ class AlbionGameApiService
     }
 
     /**
-     * Fetches player statistics with automated caching.
+     * Fetches query with automated caching.
+     * @param string $queryType Searched element - guild / player
      * @param string $nickname The in-game player name
      * @param string $server The region to query
      * @return array An associative array containing 'data' and 'debug' information
      */
-    public function getPlayerStats(string $nickname, string $server, bool $debug = false)
+    public function getSearchedElement(string $queryType,string $nickname, string $server, bool $debug = false)
     {
         if($nickname){
             $nickname = strtolower($nickname);
         }
-        $cacheKey = "albion_player_{$server}_{$nickname}";
+        $cacheKey = "albion_{$queryType}_{$server}_{$nickname}";
         $this->baseUrl = $this->getUrlByServer($server);
         $source = 'cache'; // Domyślnie zakładamy cache
 
         // 1. Próbujemy pobrać z Cache
-        $playerData = Cache::get($cacheKey);
+        $data = Cache::get($cacheKey);
 
         // 2. Jeśli nie ma w Cache, uderzamy do API
-        if ($playerData === null) {
+        if ($data === null) {
             $source = 'api'; // Zmieniamy flagę na api
             
             $response = Http::get("{$this->baseUrl}search?q={$nickname}");
             
             if ($response->successful()) {
-                $playerData = $response->json();
+                $data = $response->json();
                 
                 // Zapisujemy do cache na godzinę (3600s) tylko jeśli sukces
-                Cache::put($cacheKey, $playerData, 7200);
+                Cache::put($cacheKey, $data, 7200);
 
-                $index = Cache::get('albion_player_last_searched', []);
+                $index = Cache::get('albion_'. $queryType .'_last_searched', []);
 
                 $index[] = $cacheKey;
 
                 $index = array_values(array_unique($index));
                 $index = array_slice($index, -50);
 
-                Cache::put('albion_player_last_searched', $index, 7200);
+                Cache::put('albion_'. $queryType .'_last_searched', $index, 7200);
             }
         }
 
         if($debug){
             return [
-                'data' => $playerData,
+                'data' => $data,
                 'debug' => [
                     'source' => $source, // Tu masz informację: 'cache' lub 'api'
                     'cache_key' => $cacheKey,
-                    'status' => $playerData ? 'Success' : 'Not Found/Error',
+                    'status' => $data ? 'Success' : 'Not Found/Error',
                 ]
             ];
         } else {
             return [
-                'data' => $playerData,
+                'data' => $data,
             ];
         }
     }

@@ -1,29 +1,29 @@
 <?php
 
-// use Livewire\Volt\Component;
 use Livewire\Component;
 use App\Http\Services\AlbionGameApiService;
 use App\Traits\InteractsWithRedisCache;
 use function Livewire\Volt\{mount, state};
 
-new class extends Component {
+new class extends Component
+{
     use InteractsWithRedisCache;
 
-    public string $playerId = '';
+    public string $guildName = '';
     public string $selectedServer = 'eu';
-    public ?array $playerFromRequest = null;
+    public ?array $seGuild = null;
     public bool $notFound = false;
-    public $playersFromCache;
+    public $guildsFromCache;
 
     public function searchWithCache(AlbionGameApiService $service)
     {
         $this->notFound = false;
-        $this->playerFromRequest = null;
+        $this->seGuild = null;
 
-        if(empty($this->playerId)) return;
+        if(empty($this->guildName)) return;
         if(empty($this->selectedServer)) return;
 
-        $data = $service->getSearchedElement('player',$this->playerId, $this->selectedServer, true);
+        $data = $service->getSearchedElement('guild',$this->guildName, $this->selectedServer, true);
 
         if($data) {
             $this->playerFromRequest = $data;
@@ -31,11 +31,12 @@ new class extends Component {
             $this->notFound = true;
         }
         $this->playersFromCache = $this->getCache();
+        $this->dispatch('player-searched', id: $data);
     }
 
     public function getCache()
     {
-        $lastSearched = config('cache.albion.prefix.players.last_searched');
+        $lastSearched = config('cache.albion.prefix.guilds.last_searched');
         return $this->getLatestCacheByPrefix($lastSearched, 5);
     }
 
@@ -46,13 +47,13 @@ new class extends Component {
 };
 ?>
 
-<div class="py-10 px-8 bg-albion-main  w-full flex ">
-    <div class="w-[25%] card-albion-frame border rounded-lg duration-200 border-amber-300/20 hover:border-amber-300 shadow-(--albion-card-shadow)">
+<div class="text-white">
+    <div class="card-albion-frame border rounded-lg duration-200 border-amber-300/20 hover:border-amber-300 shadow-(--albion-card-shadow)">
         <div class="pt-2 pl-2 bg-(--albion-card-title-bg) rounded-t-lg border-b border-amber-300/40 text-gray-300 font-bold text-2xl pb-2">Search player</div>
         <div class="flex flex-col gap-2 px-4 py-6 items-center">
             <input 
                 type="text" 
-                wire:model="playerId" 
+                wire:model="guildName" 
                 wire:keydown.enter="searchWithCache"
                 placeholder="Player name..." 
                 class="flex-1 rounded-md bg-(--albion-card-title-bg) border-1 py-1 px-2 border-zinc-800 focus:outline-1 focus:outline-amber-300 focus:outline-offset-2 dark:bg-zinc-900 text-gray-300"
@@ -102,46 +103,5 @@ new class extends Component {
                 Szukaj
             </button>
         </div>
-
-        <div class="flex flex-col items-center h-64 overflow-y-auto">
-            <div class="w-full pt-2 pl-2 bg-(--albion-card-title-bg) rounded-t-lg border-b border-amber-300/40 text-gray-300 font-bold text-2xl pb-2">
-                Last Searched
-            </div>
-            @if(isset($playersFromCache))
-                @foreach($playersFromCache as $player)
-                    @if ($player != null)
-                        <x-cards.player-cache-card :player="$player['players'][0]" />
-                    @endif
-                @endforeach
-            @else
-                <div class="p-4 border bg-amber-950/40 border-amber-900/60 text-amber-300 rounded">
-                    Noone was searched yet
-                </div>
-            @endif
-        </div>
-    </div>
-
-    <div class="w-full pl-12 text-gray-300 ">
-        <span class="text-3xl font-bold">FIND ANY PLAYER ANYWHERE</span>
-        <div class="min-h-32">
-            @if($playerFromRequest)
-                <div class="mt-4">
-                    <x-cards.player-card :player="$playerFromRequest['data']['players'][0]" />
-                </div>
-        
-                @if(isset($player['debug']))
-                    <x-debug.cache-debug :debug="$playerFromRequest['debug']" />
-                @endif
-            @else
-                <span class="text-gray-300/90">Here you will see main properties of your character</span>
-            @endif
-        </div>
-        @if($notFound)
-        <div class="mt-4 text-red-500 text-sm">
-            Nie znaleziono takiego hultaja w Albionie.
-        </div>
-        @endif
-
-        
     </div>
 </div>

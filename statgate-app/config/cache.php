@@ -121,7 +121,8 @@ return [
                 'last_searched' => 'albion_player_last_searched',
             ],
             'guilds' => [
-
+                'guild' => 'albion_guild_',
+                'last_searched' => 'albion_guild_last_searched',
             ]
         ],
     ]
