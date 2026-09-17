@@ -26,12 +26,12 @@ new class extends Component
         $data = $service->getSearchedElement('guild',$this->guildName, $this->selectedServer, true);
 
         if($data) {
-            $this->playerFromRequest = $data;
+            $this->guildFromRequest = $data;
         } else {
             $this->notFound = true;
         }
-        $this->playersFromCache = $this->getCache();
-        $this->dispatch('player-searched', id: $data);
+        $this->guildsFromCache = $this->getCache();
+        $this->dispatch('guild-searched', data: $data);
     }
 
     public function getCache()
@@ -42,20 +42,20 @@ new class extends Component
 
     public function mount() {
         
-        $this->playersFromCache = $this->getCache();
+        $this->guildsFromCache = $this->getCache();
     }
 };
 ?>
 
 <div class="text-white">
-    <div class="card-albion-frame border rounded-lg duration-200 border-amber-300/20 hover:border-amber-300 shadow-(--albion-card-shadow)">
-        <div class="pt-2 pl-2 bg-(--albion-card-title-bg) rounded-t-lg border-b border-amber-300/40 text-gray-300 font-bold text-2xl pb-2">Search player</div>
+    <div class="cache-card-frame shadow-2xl border rounded-lg duration-200 border-amber-300/20 hover:border-amber-300 shadow-(--albion-card-shadow)">
+        <div class="pt-2 pl-2 bg-(--albion-card-title-bg) rounded-t-lg border-b border-amber-300/40 text-gray-300 font-bold text-2xl pb-2">Search guild</div>
         <div class="flex flex-col gap-2 px-4 py-6 items-center">
             <input 
                 type="text" 
                 wire:model="guildName" 
                 wire:keydown.enter="searchWithCache"
-                placeholder="Player name..." 
+                placeholder="Guild name..." 
                 class="flex-1 rounded-md bg-(--albion-card-title-bg) border-1 py-1 px-2 border-zinc-800 focus:outline-1 focus:outline-amber-300 focus:outline-offset-2 dark:bg-zinc-900 text-gray-300"
             >
 
@@ -103,5 +103,18 @@ new class extends Component
                 Szukaj
             </button>
         </div>
+        @if ($guildsFromCache)
+            <div class="flex justify-center items-center flex-col">
+                <div class="pt-2 pl-2 max-w-128 mb-4 bg-(--albion-card-title-bg) rounded-t-lg border-b border-amber-300/40 text-gray-300 font-bold text-2xl pb-2">Last Searched</div>
+                @foreach ($guildsFromCache as $guildC)
+                    @php
+                        $guildData = $guildC['guilds'][0] ?? null;
+                    @endphp
+                    @if($guildData)
+                        <x-cards.guild-cache-card :guildData="$guildData" />
+                    @endif
+                @endforeach
+            </div>
+        @endif
     </div>
 </div>

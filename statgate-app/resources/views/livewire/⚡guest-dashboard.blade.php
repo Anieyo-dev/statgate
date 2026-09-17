@@ -9,12 +9,41 @@ new class extends Component
 ?>
 
 <div class="pt-2 text-gray-300 text-center">
-    <h1>Register and save your champion</h1>
-    <p>We offer you a wide long analisys of your albion journey, but not only!</p>
-    <p>We prepared special system for generating your OWN CV for guilds</p>
-    <p>Without ANY PROBLEMS you can prepare READY FOR document for your friends, discord push etc.</p>
-    <p>Additionaly we analise your account for your playstyle and compare with the best of</p>
-    <p>You can track your progress from one site</p>
-    <p>If you are a streamer, or guild boss you can track your guild members events</p>
-    <p>Easly track who in your guild is the best murderer or scalper</p>
+
+    <h1 class="text-3xl font-extrabold my-12 text-[var(--font-albion-secondary-light)]">Everything at one place!</h1>
+
+    <x-sections.dashboard-section 
+        description="Track your progress"
+        image="{{asset('images/slides/dashboard/albion-char.jpeg')}}"
+        image_pos="xl:flex-row"
+        redirect="{{ route('guest.search-player') }}">
+
+    </x-sections.dashboard-section>
+
+    <x-sections.dashboard-section 
+        description="Track a wide long analisys of your albion journey!"
+        image="{{asset('images/slides/dashboard/albion-guild.jpeg')}}"
+        image_pos="xl:flex-row-reverse"
+        section_class="my-12">
+
+    </x-sections.dashboard-section>
+    
+    <x-sections.dashboard-section 
+        description="Generate your CV for guilds as PDF file or Discord push"
+        image="{{asset('images/slides/dashboard/albion-slide.jpeg')}}"
+        image_pos="xl:flex-row"
+        section_class="my-12">
+
+    </x-sections.dashboard-section>
+
+    <x-sections.dashboard-section 
+        description="Track your guild progress and your members"
+        image="{{asset('images/slides/dashboard/albion-slide-2.jpg')}}"
+        image_pos=""
+        section_class="my-12"
+        redirect="{{ route('guest.guilds') }}">
+
+    </x-sections.dashboard-section>
+
+    
 </div>

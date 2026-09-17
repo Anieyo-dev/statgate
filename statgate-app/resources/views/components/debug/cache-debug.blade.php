@@ -1,7 +1,7 @@
 @props(['debug'])
 
 {{-- Sekcja Debug --}}
-<div class="mt-4 p-4 bg-gray-900 text-green-400 rounded-lg shadow-inner font-mono text-xs">
+<div class="absolute bottom-0 right-0 mt-4 p-4 bg-gray-900 text-green-400 rounded-lg shadow-inner font-mono text-xs">
     <div class="flex items-center mb-2 border-b border-gray-700 pb-1">
         <span class="mr-2">🚀</span>
         <h3 class="font-bold uppercase">Redis & Cache Debug</h3>

@@ -1,4 +1,7 @@
 <x-filament-panels::layout>
+  <div class="text-white text-center text-5xl mt-4">
+    Here will be list of popular guild searches (from db?)
+  </div>
   <div class="flex mt-8 text-white albion-frame--1 flex-col lg:flex-row">
       <div id="albion-search-container">
         <div id="albion-search-form">

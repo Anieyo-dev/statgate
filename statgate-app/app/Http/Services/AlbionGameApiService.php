@@ -54,19 +54,16 @@ class AlbionGameApiService
         $this->baseUrl = $this->getUrlByServer($server);
         $source = 'cache'; // Domyślnie zakładamy cache
 
-        // 1. Próbujemy pobrać z Cache
         $data = Cache::get($cacheKey);
 
-        // 2. Jeśli nie ma w Cache, uderzamy do API
         if ($data === null) {
-            $source = 'api'; // Zmieniamy flagę na api
+            $source = 'api'; 
             
             $response = Http::get("{$this->baseUrl}search?q={$nickname}");
             
             if ($response->successful()) {
                 $data = $response->json();
                 
-                // Zapisujemy do cache na godzinę (3600s) tylko jeśli sukces
                 Cache::put($cacheKey, $data, 7200);
 
                 $index = Cache::get('albion_'. $queryType .'_last_searched', []);
@@ -77,6 +74,42 @@ class AlbionGameApiService
                 $index = array_slice($index, -50);
 
                 Cache::put('albion_'. $queryType .'_last_searched', $index, 7200);
+            }
+        }
+
+        if($debug){
+            return [
+                'data' => $data,
+                'debug' => [
+                    'source' => $source, // Tu masz informację: 'cache' lub 'api'
+                    'cache_key' => $cacheKey,
+                    'status' => $data ? 'Success' : 'Not Found/Error',
+                ]
+            ];
+        } else {
+            return [
+                'data' => $data,
+            ];
+        }
+    }
+
+    public function getPlayerById(string $id, string $server, bool $debug = false)
+    {
+        $cacheKey = "albion_player_more_{$server}_{$id}";
+        $this->baseUrl = $this->getUrlByServer($server);
+        $source = 'cache'; // Domyślnie zakładamy cache
+
+        $data = Cache::get($cacheKey);
+
+        if ($data === null) {
+            $source = 'api'; 
+            
+            $response = Http::get("{$this->baseUrl}players/{$id}");
+            
+            if ($response->successful()) {
+                $data = $response->json();
+                
+                Cache::put($cacheKey, $data, 7200);
             }
         }
 

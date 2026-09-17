@@ -118,10 +118,12 @@ return [
         'prefix' => [
             'players' => [
                 'user' => 'albion_player_',
+                'user_more' => 'albion_player_more_',
                 'last_searched' => 'albion_player_last_searched',
             ],
             'guilds' => [
                 'guild' => 'albion_guild_',
+                'guild_more' => 'albion_guild_more_',
                 'last_searched' => 'albion_guild_last_searched',
             ]
         ],

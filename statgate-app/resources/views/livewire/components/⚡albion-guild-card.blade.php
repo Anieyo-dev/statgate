@@ -7,14 +7,17 @@ new class extends Component
 {
     public string $name = '1';
     public array $dataL = [];
-    //
-    // W Volcie eventy rejestruje się w tablicy $listeners
+    public array $debug = [];
+    
     protected $listeners = [
-        'player-searched' => 'handle'
+        'guild-searched' => 'handle'
     ];
 
     public function handle($data) {
         $this->dataL = $data['data']['guilds'][0];
+        if(isset($data['debug'])){
+            $this->debug = $data['debug'];
+        }
     }
 };
 ?>
@@ -24,9 +27,12 @@ new class extends Component
         <div class="card-albion-frame flex">
         <h1>Guild: {{$dataL['Name']}}</h1>
         <div class="flex flex-col ml-auto">
-            <p>Kill Fame : 0</p>
-            <p>Death Fame : 6000</p>
+            <p>KF/DF: {{$dataL['KillFame']}} / {{$dataL['DeathFame']}}</p>
+            {{-- <p>DF : 6000</p> --}}
         </div>
+        @if(isset($debug))
+            <x-debug.cache-debug :debug="$debug" />
+        @endif
     </div>
     @endif
 </div>

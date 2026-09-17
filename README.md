@@ -20,6 +20,8 @@ If I get all of those I would like to test other apis
 - Filament 5.x
 - Redis
 - Livewire
+- Tailwind
+- Scss
 - Maybe Vue, but Livewire is good enought to not complicate project development
 - Volt (Vue-like blade components typing)
 - maybe more
@@ -47,3 +49,15 @@ Volt changing blade typing, that gives this what give Vue. One file - controller
 # Horizon
 
 This will be tested for queues. Will be useful for api responses to keep alive requests if ned.
+
+# Styling
+
+Maybe you will ask, "Why scss, when you are using Tailwind".
+
+Scss is for me verry usefull for some reasons
+
+1. I can freely edit Filament classes,
+2. I can freely create some classes if I need - custom 9slice elements from figma
+3. Easy manage cause 7/1 structure (edited by me for my usage)
+
+Tailwind is for fast prototyping and styling my html elements. This makes my coding much more faster without spending time for creating classes etc.

@@ -74,3 +74,13 @@ body{
    border-bottom: 0;
    border-image: url('/public/images/elements/border-2.svg') 24  ;
 }
+
+.cache-card-frame{
+   border: 24px solid transparent;
+   border-image: url('/public/images/elements/border-5.svg') 24  ;
+}
+
+.cache-card-frame-bg{
+   border: 24px solid transparent;
+   border-image: url('/public/images/elements/border-6-bg.svg') 24  ;
+}

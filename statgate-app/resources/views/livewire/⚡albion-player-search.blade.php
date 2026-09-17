@@ -46,8 +46,8 @@ new class extends Component {
 };
 ?>
 
-<div class="py-10 px-8 bg-albion-main  w-full flex ">
-    <div class="w-[25%] card-albion-frame border rounded-lg duration-200 border-amber-300/20 hover:border-amber-300 shadow-(--albion-card-shadow)">
+<div class="py-10 px-8 bg-albion-main  w-full flex flex-col md:flex-row ">
+    <div class="sm:w-[75%] m-auto md:w-[50%] lg:w-[30%] card-albion-frame border rounded-lg duration-200 border-amber-300/20 hover:border-amber-300 shadow-(--albion-card-shadow)">
         <div class="pt-2 pl-2 bg-(--albion-card-title-bg) rounded-t-lg border-b border-amber-300/40 text-gray-300 font-bold text-2xl pb-2">Search player</div>
         <div class="flex flex-col gap-2 px-4 py-6 items-center">
             <input 
@@ -103,7 +103,7 @@ new class extends Component {
             </button>
         </div>
 
-        <div class="flex flex-col items-center h-64 overflow-y-auto">
+        <div class="flex flex-col items-center h-64 overflow-y-auto overflow-x-hidden">
             <div class="w-full pt-2 pl-2 bg-(--albion-card-title-bg) rounded-t-lg border-b border-amber-300/40 text-gray-300 font-bold text-2xl pb-2">
                 Last Searched
             </div>
@@ -121,10 +121,11 @@ new class extends Component {
         </div>
     </div>
 
-    <div class="w-full pl-12 text-gray-300 ">
-        <span class="text-3xl font-bold">FIND ANY PLAYER ANYWHERE</span>
+    <div class="mt-6 text-gray-300 m-auto md:pl-12 md:w-full ">
+        
         <div class="min-h-32">
             @if($playerFromRequest)
+                <span class="text-3xl font-bold">Click for more details</span>
                 <div class="mt-4">
                     <x-cards.player-card :player="$playerFromRequest['data']['players'][0]" />
                 </div>
@@ -133,6 +134,7 @@ new class extends Component {
                     <x-debug.cache-debug :debug="$playerFromRequest['debug']" />
                 @endif
             @else
+                <span class="text-3xl font-bold">FIND ANY PLAYER ANYWHERE</span>
                 <span class="text-gray-300/90">Here you will see main properties of your character</span>
             @endif
         </div>

@@ -1,0 +1,29 @@
+.fi-tabs.fi-contained{
+  // border-bottom: 23px solid transparent;
+  // border-image: url('/public/images/elements/border-6-bottom-1.svg') 6  ;
+  border: none;
+  display: flex;
+  flex-wrap: wrap;
+  .fi-tabs-item{
+    &:hover{
+      background: none;
+    }
+    .fi-tabs-item-label{
+      color: black;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transition: 200ms;logo
+      &:hover{
+      background: none;
+      color: var(--game-accent);
+    }
+    }
+    &.fi-active{
+      background: none;
+      .fi-tabs-item-label{
+        color: var(--game-accent);
+      }
+    }
+    
+  }
+}

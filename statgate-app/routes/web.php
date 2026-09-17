@@ -10,20 +10,26 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::name('guest.')->group(function (){
+Route::name('guest.')
+    ->prefix('albion')
+    ->group(function (){
 
-    // Volt::route('/', 'guest-dashboard')->name('dashboard');
-    Route::get('/', function () {
-        return view('pages.albion.guest-dashboard');
-    })->name('dashboard');
+        // Volt::route('/', 'guest-dashboard')->name('dashboard');
+        Route::get('/', function () {
+            return view('pages.albion.guest-dashboard');
+        })->name('dashboard');
 
-    // URL: /search-player | Name: guest.search-player
-    Route::get('/search-player', [SearchPlayerController::class, 'show'])
-        ->name('search-player');
+        // URL: /search-player | Name: guest.search-player
+        Route::get('/search-player', [SearchPlayerController::class, 'show'])
+            ->name('search-player');
 
-    Route::get('/guilds', function () {
-        return view('pages.albion.guilds');
-    })->name('guilds');
+        Route::get('/guilds', function () {
+            return view('pages.albion.guilds');
+        })->name('guilds');
+
+        Route::get('/player/{id}', function (){
+            return view('pages.albion.player');
+        })->name('player');
 });
 
 Route::name('profile.')
