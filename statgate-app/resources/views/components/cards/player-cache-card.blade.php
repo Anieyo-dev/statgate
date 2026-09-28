@@ -1,7 +1,7 @@
-@props(['player'])
+@props(['player', 'server' => 'eu'])
 
 {{-- <div class="border border-gray-900 bg-albion-main p-4 rounded shadow-(--albion-card-shadow) w-full"> --}}
-<a href="{{ route('guest.player', $player['Id']) }}">
+<a href="{{ route('guest.player', ['id' => $player['Id'], 'server' => $server]) }}">
   <div class="w-full border border-gray-700/80 hover:translate-x-[5%] duration-300 hover:cursor-pointer my-2 rounded-xl">
     <div class="flex text-white p-4">
       <div class="flex items-center">

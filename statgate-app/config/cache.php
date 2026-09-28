@@ -119,7 +119,7 @@ return [
             'players' => [
                 'user' => 'albion_player_',
                 'user_more' => 'albion_player_more_',
-                'last_searched' => 'albion_player_last_searched',
+                'last_searched' => 'albion_player_last_searched_',
             ],
             'guilds' => [
                 'guild' => 'albion_guild_',

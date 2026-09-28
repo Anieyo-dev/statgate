@@ -1,7 +1,20 @@
 <x-filament-panels::layout>
-  <div class="text-white text-center text-5xl mt-4">
+  <div class="flex justify-center relative ">
+        <img class="pt-1" src="{{ asset('images/albion-main-2-crop.jpeg') }}" alt="Logo">
+        <p class="absolute inset-x-0 top-8 flex justify-center text-6xl text-amber-400 text-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+          Search Guild
+        </p>
+        <div class="absolute inset-x-0 top-24 flex justify-center">
+            @include('partials.albion-breadcrumb-abs', [
+                'urls' => [
+                '/albion/guilds' => 'Search Guild'
+                ]
+            ])
+        </div>
+    </div>
+  {{-- <div class="text-white text-center text-5xl mt-4">
     Here will be list of popular guild searches (from db?)
-  </div>
+  </div> --}}
   <div class="flex mt-8 text-white albion-frame--1 flex-col lg:flex-row">
       <div id="albion-search-container">
         <div id="albion-search-form">

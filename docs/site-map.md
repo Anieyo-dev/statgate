@@ -26,3 +26,25 @@ The code for this page can be found at:
 ![Main dashboard](./img/albion-search-player.png)
 
 ![Main dashboard mobile](./img/albion-search-player-mobile.png)
+
+### Player info
+
+Early stage of player info page
+
+/resources/views/livewire/pages/albion-player.blade.php
+
+![Player info](./img/albion-player.png)
+
+![Player info mobile](./img/albion-player-mobile.png)
+
+### Player CV
+
+This is super early stage of cv. Data is loaded from cache, implementation can be found at:
+
+/statgate-app/app/Http/Controllers/PdfGenerationController.php
+
+/statgate-app/resources/views/pdf/player.blade.php
+
+Future plans: Generate beautyful CV automaticaly with styles and data from cache. Next guild CV.
+
+![Player CV](./img/player-cv.png)

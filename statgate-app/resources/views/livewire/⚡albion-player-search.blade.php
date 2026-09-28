@@ -31,17 +31,20 @@ new class extends Component {
             $this->notFound = true;
         }
         $this->playersFromCache = $this->getCache();
+        
     }
 
     public function getCache()
     {
-        $lastSearched = config('cache.albion.prefix.players.last_searched');
+        $sessionId = session()->getId();
+        $lastSearched = config('cache.albion.prefix.players.last_searched') . $sessionId;
         return $this->getLatestCacheByPrefix($lastSearched, 5);
     }
 
     public function mount() {
         
         $this->playersFromCache = $this->getCache();
+    
     }
 };
 ?>
@@ -110,7 +113,7 @@ new class extends Component {
             @if(isset($playersFromCache))
                 @foreach($playersFromCache as $player)
                     @if ($player != null)
-                        <x-cards.player-cache-card :player="$player['players'][0]" />
+                        <x-cards.player-cache-card :player="$player['response']['players'][0]" :server="$player['server']" />
                     @endif
                 @endforeach
             @else
@@ -127,20 +130,22 @@ new class extends Component {
             @if($playerFromRequest)
                 <span class="text-3xl font-bold">Click for more details</span>
                 <div class="mt-4">
-                    <x-cards.player-card :player="$playerFromRequest['data']['players'][0]" />
+                    <x-cards.player-card :player="$playerFromRequest['data']['response']['players'][0]" :server="$playerFromRequest['data']['server']" />
                 </div>
         
                 @if(isset($player['debug']))
                     <x-debug.cache-debug :debug="$playerFromRequest['debug']" />
                 @endif
             @else
-                <span class="text-3xl font-bold">FIND ANY PLAYER ANYWHERE</span>
-                <span class="text-gray-300/90">Here you will see main properties of your character</span>
+                <div class="flex flex-col">
+                    <span class="text-3xl font-bold">FIND ANY PLAYER ANYWHERE</span>
+                    <span class="text-gray-300/90 text-center md:text-left">Here you will see main properties of your character</span>
+                </div>
             @endif
         </div>
         @if($notFound)
         <div class="mt-4 text-red-500 text-sm">
-            Nie znaleziono takiego hultaja w Albionie.
+            Player with given name wasn't found.
         </div>
         @endif
 

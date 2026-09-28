@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\PdfGenerationController;
 use App\Http\Controllers\SearchPlayerController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 Route::get('/w', function () {
     return view('welcome');
@@ -27,9 +29,14 @@ Route::name('guest.')
             return view('pages.albion.guilds');
         })->name('guilds');
 
-        Route::get('/player/{id}', function (){
-            return view('pages.albion.player');
+        Route::get('/player/{id}', function ($id, Request $request){
+            $server = $request->query('server', 'eu');
+
+            return view('pages.albion.player', compact('id', 'server'));
         })->name('player');
+
+        Route::get('/player-pdf/{id}', [PdfGenerationController::class, 'generatePDF'])
+            ->name('player.pdf');
 });
 
 Route::name('profile.')

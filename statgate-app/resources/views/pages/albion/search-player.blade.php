@@ -3,11 +3,11 @@
         <img class="pt-1" src="{{ asset('images/albion-main-2-crop.jpeg') }}" alt="Logo">
         <p class="absolute inset-x-0 top-8 flex justify-center text-6xl text-amber-400 text-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Search Player</p>
         <div class="absolute inset-x-0 top-24 flex justify-center">
-            <x-filament::breadcrumbs  :breadcrumbs="[
-            '/' => 'Home',
-            '/search-player' => 'Search Player'
-            ]" class="" 
-            />
+            @include('partials.albion-breadcrumb-abs', [
+                'urls' => [
+                '/albion/search-player' => 'Search Player'
+                ]
+            ])
         </div>
     </div>
     <div class="border-t-4 border-amber-400">

@@ -50,30 +50,35 @@ class AlbionGameApiService
         if($nickname){
             $nickname = strtolower($nickname);
         }
-        $cacheKey = "albion_{$queryType}_{$server}_{$nickname}";
+        $sessionId = session()->getId();
+        $cacheKey = "albion_{$queryType}_{$sessionId}_{$server}_{$nickname}";
         $this->baseUrl = $this->getUrlByServer($server);
-        $source = 'cache'; // Domyślnie zakładamy cache
+        $source = 'cache'; // Default Cache
 
         $data = Cache::get($cacheKey);
 
         if ($data === null) {
+            
             $source = 'api'; 
             
             $response = Http::get("{$this->baseUrl}search?q={$nickname}");
             
             if ($response->successful()) {
-                $data = $response->json();
+                $data = [
+                    'response' => $response->json(),
+                    'server' => $server,
+                ];
                 
                 Cache::put($cacheKey, $data, 7200);
 
-                $index = Cache::get('albion_'. $queryType .'_last_searched', []);
-
+                $index = Cache::get('albion_'. $queryType .'_last_searched_' . $sessionId, []);
+                
                 $index[] = $cacheKey;
 
                 $index = array_values(array_unique($index));
                 $index = array_slice($index, -50);
 
-                Cache::put('albion_'. $queryType .'_last_searched', $index, 7200);
+                Cache::put('albion_'. $queryType .'_last_searched_' . $sessionId, $index, 7200);
             }
         }
 
@@ -81,7 +86,7 @@ class AlbionGameApiService
             return [
                 'data' => $data,
                 'debug' => [
-                    'source' => $source, // Tu masz informację: 'cache' lub 'api'
+                    'source' => $source, // Cache or Api
                     'cache_key' => $cacheKey,
                     'status' => $data ? 'Success' : 'Not Found/Error',
                 ]
@@ -95,9 +100,10 @@ class AlbionGameApiService
 
     public function getPlayerById(string $id, string $server, bool $debug = false)
     {
-        $cacheKey = "albion_player_more_{$server}_{$id}";
+        $sessionId = session()->getId();
+        $cacheKey = "albion_player_more_{$sessionId}_{$server}_{$id}";
         $this->baseUrl = $this->getUrlByServer($server);
-        $source = 'cache'; // Domyślnie zakładamy cache
+        $source = 'cache'; // default cache
 
         $data = Cache::get($cacheKey);
 
@@ -107,7 +113,10 @@ class AlbionGameApiService
             $response = Http::get("{$this->baseUrl}players/{$id}");
             
             if ($response->successful()) {
-                $data = $response->json();
+                $data = [
+                    'response' => $response->json(),
+                    'server' => $server,
+                ];
                 
                 Cache::put($cacheKey, $data, 7200);
             }

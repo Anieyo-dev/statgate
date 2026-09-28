@@ -24,6 +24,7 @@ If I get all of those I would like to test other apis
 - Scss
 - Maybe Vue, but Livewire is good enought to not complicate project development
 - Volt (Vue-like blade components typing)
+- barryvdh/laravel-dompdf - 3.1 // Generating PDFs
 - maybe more
 
 # Why laravel?
